@@ -2,7 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="mobile-web-app-capable" content="yes" />
 <title>منشئ البروفايلات الأكاديمية | elgoharyX</title>
 <meta name="description" content="منشئ بروفايلات أكاديمية احترافية من elgoharyX — أنشئ ملفك الشخصي بأكثر من 100 تخطيط و48 لوناً، وارفع صورتك، وشاركه برابط مختصر قابل للتعديل." />
 <meta name="keywords" content="بروفايل أكاديمي, منشئ بروفايل, بطاقة تعريف, ملف شخصي, elgoharyX, أساتذة, باحثون, السيرة الذاتية, academic profile builder, digital business card" />
@@ -971,6 +974,171 @@
   .mp-actions a:hover,.mp-actions button:hover{border-color:var(--gold);color:var(--txt)}
   .mp-actions .del:hover{border-color:#ff6b6b;color:#ff9a9a}
   .mp-empty{border:1px dashed var(--stroke);border-radius:14px;padding:44px 20px;text-align:center;color:var(--muted)}
+
+  /* ---------- error screen ---------- */
+  .err-wrap{min-height:calc(100vh - 62px);display:grid;place-items:center;padding:40px 18px}
+  .err-card{width:min(560px,100%);text-align:center;position:relative;overflow:hidden;
+    background:linear-gradient(180deg,var(--panel),var(--bg-2));border:1px solid var(--stroke);
+    border-radius:16px;padding:clamp(30px,6vw,52px) clamp(22px,5vw,42px)}
+  .err-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,transparent,var(--gold),var(--gold-2),var(--gold),transparent)}
+  .err-logo{width:52px;height:52px;object-fit:contain;border-radius:12px;margin:0 auto 18px;display:block;
+    background:#0b1424;padding:6px;border:1px solid var(--stroke)}
+  .err-code{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:clamp(70px,16vw,120px);line-height:.9;
+    background:linear-gradient(180deg,var(--gold-2),var(--gold) 60%,#a8842f);-webkit-background-clip:text;
+    background-clip:text;color:transparent}
+  .err-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:1.3px;color:var(--gold-2);
+    border:1px solid rgba(201,165,72,.32);background:rgba(201,165,72,.06);padding:5px 13px;border-radius:100px;margin:8px 0 16px}
+  .err-tag i{width:7px;height:7px;border-radius:50%;background:#ff6b6b;box-shadow:0 0 10px #ff6b6b}
+  .err-title{font-family:"Cormorant Garamond",serif;font-size:clamp(22px,4.5vw,30px);font-weight:600;margin-bottom:10px}
+  .err-msg{color:var(--muted);font-size:14.5px;line-height:1.9;max-width:46ch;margin:0 auto 24px}
+  .err-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+
+  /* ---------- mobile / phones ---------- */
+  @media(max-width:600px){
+    .appbar{padding:11px 14px;gap:8px}
+    .brand{font-size:16px;gap:8px}
+    .brand .mark{width:30px;height:30px}
+    .brand .ar{display:none}
+    .appbar .tag{display:none}
+    .appbar>div:last-child{gap:6px}
+    .appbar .btn.ghost{padding:8px 11px!important;font-size:12px!important}
+    .user-chip{font-size:12px;gap:6px}
+    .user-chip .avatar-sm{width:26px;height:26px;font-size:12px}
+    .wrap{padding:16px 14px}
+    .builder{gap:18px}
+    .panel{border-radius:14px}
+    .acc-body{padding:13px}
+    .mp-head h2{font-size:22px}
+    .mp-grid{grid-template-columns:1fr}
+    .templates{max-height:210px}
+    .layouts{max-height:220px}
+    .btn{padding:12px 18px}
+    .modal{padding:22px 18px}
+    .modal-actions{grid-template-columns:1fr}
+    .auth-wrap{min-height:calc(100vh - 54px);padding:20px 14px}
+    /* profile card fits small screens */
+    .viewer{padding:16px 12px;min-height:auto}
+    .pf-inner{padding:20px 16px}
+    .pf-top{gap:16px}
+    .pf-avatar{--s:96px!important}
+    .pf-info{grid-template-columns:1fr}
+    .pf-actions{flex-direction:column}
+    .pf-actions .pf-btn{width:100%;justify-content:center}
+    .l-sidebar{flex-direction:column}
+    .l-sidebar .pf-side{flex-basis:auto;width:100%}
+    .l-magazine .mag-about{column-count:1}
+    .align-ctl{flex-direction:column;align-items:stretch}
+    .align-ctl .btn.ghost{width:100%;justify-content:center}
+    .link-add{flex-direction:column}
+    .link-add .mini-select,.link-add input,.link-add .btn{width:100%}
+    .site-foot{padding:18px 14px 22px;text-align:center}
+    .err-code{font-size:84px}
+  }
+  @media(hover:none){ .pf.is3d{transition:none} }
+
+  /* ---------- app-like mobile shell (bottom tab bar, sheets, safe areas) ---------- */
+  .tabbar{display:none}
+  *{-webkit-tap-highlight-color:transparent}
+  .appbar{padding-top:calc(14px + env(safe-area-inset-top,0px))}
+  @media(max-width:600px){
+    .appbar{padding:calc(9px + env(safe-area-inset-top,0px)) 14px 9px}
+    .ab-nav,.ab-only,.user-chip,.tabbar{display:none}
+    .ab-right{gap:6px}
+
+    /* bottom tab bar */
+    .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:45;justify-content:space-around;
+      background:rgba(12,20,36,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+      border-top:1px solid var(--stroke-soft);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+    html[data-mode="light"] .tabbar{background:rgba(255,255,255,.94)}
+    .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;
+      color:var(--muted-2);font-family:inherit;font-size:10.5px;font-weight:600;padding:8px 4px;border-radius:12px;
+      transition:transform .12s,color .12s}
+    .tab svg{width:23px;height:23px}
+    .tab.on{color:var(--gold-2)}
+    .tab:active{background:rgba(255,255,255,.06);transform:scale(.94)}
+
+    .wrap{padding-bottom:calc(26px + env(safe-area-inset-bottom,0px))}
+    .auth-wrap{padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))}
+    .site-foot{padding:18px 14px calc(22px + env(safe-area-inset-bottom,0px))}
+
+    /* modals as bottom sheets */
+    .overlay{align-items:flex-end;padding:0}
+    .modal{width:100%;max-width:100%;border-radius:20px 20px 0 0;animation:sheetUp .28s ease;
+      padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+    .modal::after{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);
+      width:40px;height:4px;border-radius:100px;background:var(--stroke)}
+    .modal .close{top:16px;left:16px}
+  }
+  @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+  /* ---------- mobile-first builder (preview pinned on top, app-like) ---------- */
+  @media(max-width:600px){
+    /* 16px inputs prevent iOS from auto-zooming on focus */
+    input,select,textarea,.field input,.field textarea,.mini-select,
+    .lay-search,.link-add input,.align-sliders input{font-size:16px}
+    .field input,.field textarea{padding:13px 14px}
+
+    .panel h2{font-size:20px}
+    .panel>.sub{font-size:12.5px;margin-bottom:16px}
+
+    /* builder becomes a single column with the LIVE PREVIEW pinned at the top */
+    .builder{gap:0}
+    .preview-col{order:-1;position:sticky;top:calc(52px + env(safe-area-inset-top,0px));z-index:25;
+      margin:0 -14px 14px;background:var(--bg)}
+    .preview-col .preview-head{padding:8px 16px 6px;margin:0}
+    .preview-col .preview-head .t{font-size:15px}
+    .preview-col>.panel{border-radius:0;border-left:0;border-right:0;max-height:40vh;overflow:auto;
+      -webkit-overflow-scrolling:touch;padding:12px 14px!important;box-shadow:0 10px 20px -12px rgba(0,0,0,.5)}
+    .preview-col>.panel::before{display:none}
+    .stage{padding:0}
+
+    /* comfy touch targets */
+    .acc>summary{padding:16px}
+    .acc>summary .sum-t{font-size:15px}
+    .lay,.tpl{padding:9px}
+    .btn{padding:14px 20px;font-size:15px}
+    .switch{width:52px;height:30px}
+    .switch .slider::before{width:22px;height:22px}
+    .switch input:checked + .slider::before{right:25px}
+  }
+
+  /* ---------- hamburger + professional side drawer ---------- */
+  .ab-burger{display:none;background:none;border:none;color:var(--txt);cursor:pointer;padding:6px;border-radius:10px;line-height:0}
+  .ab-burger svg{width:26px;height:26px}
+  .ab-burger:active{background:rgba(255,255,255,.06)}
+  @media(max-width:600px){ .ab-burger{display:inline-flex} }
+  .drawer-wrap{position:fixed;inset:0;z-index:60;visibility:hidden}
+  .drawer-wrap.open{visibility:visible}
+  .drawer-bg{position:absolute;inset:0;background:rgba(6,10,18,.55);opacity:0;transition:opacity .28s}
+  .drawer-wrap.open .drawer-bg{opacity:1 !important}
+  html[data-mode="light"] .drawer-bg{background:rgba(20,30,50,.42)}
+  .drawer{position:absolute;top:0;bottom:0;right:0;width:min(300px,84vw);display:flex;flex-direction:column;
+    background:linear-gradient(180deg,var(--panel),var(--bg-2));border-left:1px solid var(--stroke);
+    box-shadow:-24px 0 60px -22px rgba(0,0,0,.65);transform:translateX(100%);
+    transition:transform .3s cubic-bezier(.2,.8,.2,1);padding-top:env(safe-area-inset-top,0px)}
+  .drawer-wrap.open .drawer{transform:translateX(0) !important}
+  .drawer-head{display:flex;align-items:center;gap:12px;padding:22px 18px 18px;border-bottom:1px solid var(--stroke-soft)}
+  .dr-av{width:44px;height:44px;font-size:18px}
+  .dr-id{flex:1;min-width:0}
+  .dr-name{font-weight:600;font-size:15px;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dr-sub{font-size:11px;color:var(--muted-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px}
+  .dr-x{background:none;border:none;color:var(--muted);cursor:pointer;padding:6px;border-radius:8px;line-height:0;flex:none}
+  .dr-x svg{width:19px;height:19px}
+  .dr-x:active{background:rgba(255,255,255,.06)}
+  .drawer-nav{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px}
+  .dr-item{display:flex;align-items:center;gap:13px;padding:14px;border-radius:12px;border:none;background:none;
+    color:var(--txt);font-family:inherit;font-size:14.5px;font-weight:500;cursor:pointer;text-align:right;width:100%;transition:background .15s}
+  .dr-item svg{width:21px;height:21px;color:var(--muted);flex:none}
+  .dr-item:active{background:rgba(255,255,255,.06)}
+  .dr-item.on{background:color-mix(in srgb,var(--gold) 13%,transparent);color:var(--gold-2)}
+  .dr-item.on svg{color:var(--gold-2)}
+  .dr-item.danger{color:#ff8a8a}
+  .dr-item.danger svg{color:#ff8a8a}
+  .drawer-foot{display:flex;align-items:center;gap:9px;padding:15px 18px calc(16px + env(safe-area-inset-bottom,0px));
+    border-top:1px solid var(--stroke-soft);color:var(--muted-2);font-size:11.5px;line-height:1.5}
+  .drawer-foot img{width:20px;height:20px;object-fit:contain;opacity:.9;flex:none}
+  .drawer-foot b{color:var(--gold-2)}
 </style>
 </head>
 <body>
@@ -1016,6 +1184,14 @@
     cube:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>',
     wand:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20 16 8M14 6l4 4M18 3l.6 1.6L20.2 5.2l-1.6.6L18 7.4l-.6-1.6L15.8 5.2l1.6-.6Z"/></svg>',
   };
+  const TAB = {
+    cards:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/></svg>',
+    plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+    logout:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>',
+    burger:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+    x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    mode:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>',
+  };
   try{ if(localStorage.getItem('apb_mode')==='light') document.documentElement.setAttribute('data-mode','light'); }catch{}
   const $ = (s,r=document)=>r.querySelector(s);
   const esc = s => String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -1041,6 +1217,36 @@
     setMeta('meta[name="twitter:description"]','content',desc);
     setMeta('meta[name="twitter:image"]','content',img);
   }
+
+  /* shared error screen (bad link, missing profile, unexpected failure) */
+  function renderError(o){
+    o=o||{};
+    try{ document.body.style.background=''; }catch(e){}
+    document.title=(o.code||'خطأ')+' — elgoharyX';
+    const app=document.getElementById('app'); if(!app) return;
+    app.innerHTML=`
+      <div class="err-wrap"><div class="err-card">
+        <img class="err-logo" src="${LOGO}" alt="elgoharyX"/>
+        <div class="err-code">${esc(o.code||'404')}</div>
+        <span class="err-tag"><i></i>${esc(o.tag||'رابط غير صالح · BROKEN LINK')}</span>
+        <h2 class="err-title">${esc(o.title||'الصفحة غير موجودة')}</h2>
+        <p class="err-msg">${esc(o.msg||'يبدو أن الرابط غير صحيح أو تم تعديله أو أن المحتوى لم يعد متاحاً.')}</p>
+        <div class="err-actions">
+          <a class="btn primary" href="${location.pathname}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 21v-6h6v6"/></svg>
+            العودة للرئيسية</a>
+          ${o.showReload?`<button class="btn ghost" onclick="location.reload()">إعادة المحاولة</button>`:''}
+        </div>
+      </div></div>`;
+  }
+  let _fatalShown=false;
+  function fatalError(){
+    if(_fatalShown) return; _fatalShown=true;
+    renderError({code:'خطأ',tag:'خطأ غير متوقّع · UNEXPECTED',title:'حدث خطأ ما',
+      msg:'واجهنا مشكلة غير متوقّعة أثناء تشغيل الصفحة. جرّب إعادة التحميل، وإن استمرّت المشكلة عُد إلى الرئيسية.',showReload:true});
+  }
+  // only real uncaught script errors trigger the boundary (ignore resource/load errors)
+  window.addEventListener('error', e=>{ if(e && e.error instanceof Error) fatalError(); });
 
   /* short unique id (7 chars, no ambiguous letters) */
   const ALPH='23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
@@ -1559,20 +1765,51 @@
   function newProfile(){ editingId=null; editMeta=null; state={...EMPTY}; showBuilder(); window.scrollTo(0,0); }
 
   /* ---------- app bar (auth aware) ---------- */
+  const modeIcon=()=>document.documentElement.getAttribute('data-mode')==='light'?SUN:MOON;
   function appbar(active){
-    const nav = currentUser ? `
-        <button class="btn ghost" data-nav="mine" style="padding:9px 15px;font-size:13px${active==='mine'?';border-color:var(--gold);color:var(--txt)':''}">بروفايلاتي</button>
-        <button class="btn ghost" data-nav="new" style="padding:9px 15px;font-size:13px">+ جديد</button>
-        <div class="user-chip"><span class="avatar-sm">${esc(initials(currentUser.username))}</span>${esc(currentUser.username)}</div>
-        <button class="btn ghost" id="logout" style="padding:9px 13px;font-size:13px">خروج</button>`
-      : `<button class="btn ghost" data-nav="login" style="padding:9px 16px;font-size:13px">تسجيل الدخول</button>`;
+    const right = currentUser ? `
+        <button class="btn ghost ab-only" data-act="mode" title="الوضع" style="padding:9px 12px">${modeIcon()}</button>
+        <div class="ab-nav">
+          <button class="btn ghost" data-nav="mine" style="padding:9px 15px;font-size:13px${active==='mine'?';border-color:var(--gold);color:var(--txt)':''}">بروفايلاتي</button>
+          <button class="btn ghost" data-nav="new" style="padding:9px 15px;font-size:13px">+ جديد</button>
+          <button class="btn ghost" data-act="logout" style="padding:9px 13px;font-size:13px">خروج</button>
+        </div>
+        <div class="user-chip"><span class="avatar-sm">${esc(initials(currentUser.username))}</span><span class="uc-name">${esc(currentUser.username)}</span></div>
+        <button class="ab-burger" data-act="menu" aria-label="القائمة">${TAB.burger}</button>`
+      : `<button class="btn ghost" data-act="mode" title="الوضع" style="padding:9px 12px">${modeIcon()}</button>
+         <button class="btn ghost" data-nav="login" style="padding:9px 16px;font-size:13px">تسجيل الدخول</button>`;
     return `<div class="appbar">
       <div class="brand"><span class="mark"><img src="${LOGO}" alt="elgoharyX"/></span>
         Academic Profiles <span class="ar">· منشئ البروفايلات</span></div>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <button class="btn ghost" id="modeBtn" title="الوضع الليلي / النهاري" style="padding:9px 12px">${document.documentElement.getAttribute('data-mode')==='light'?SUN:MOON}</button>
-        ${nav}</div>
+      <div class="ab-right">${right}</div>
     </div>`;
+  }
+  /* professional slide-in side menu (mobile) */
+  function drawer(active){
+    if(!currentUser) return '';
+    return `<div id="drawerWrap" class="drawer-wrap">
+      <div class="drawer-bg" data-act="menu-close"></div>
+      <aside class="drawer">
+        <div class="drawer-head">
+          <span class="avatar-sm dr-av">${esc(initials(currentUser.username))}</span>
+          <div class="dr-id"><div class="dr-name">${esc(currentUser.username)}</div><div class="dr-sub">${esc(currentUser.email||'حساب elgoharyX')}</div></div>
+          <button class="dr-x" data-act="menu-close" aria-label="إغلاق">${TAB.x}</button>
+        </div>
+        <nav class="drawer-nav">
+          <button class="dr-item ${active==='mine'?'on':''}" data-nav="mine">${TAB.cards}<span>بروفايلاتي</span></button>
+          <button class="dr-item ${active==='build'?'on':''}" data-nav="new">${TAB.plus}<span>بروفايل جديد</span></button>
+          <button class="dr-item" data-act="mode">${TAB.mode}<span>تبديل الوضع (ليلي / نهاري)</span></button>
+          <button class="dr-item danger" data-act="logout">${TAB.logout}<span>تسجيل الخروج</span></button>
+        </nav>
+        <div class="drawer-foot"><img src="${LOGO}" alt="elgoharyX"/><span>© 2026 <b>elgoharyX</b> — جميع الحقوق محفوظة</span></div>
+      </aside>
+    </div>`;
+  }
+  function toggleMode(){
+    const isLight=document.documentElement.getAttribute('data-mode')==='light';
+    if(isLight){ document.documentElement.removeAttribute('data-mode'); try{localStorage.setItem('apb_mode','dark');}catch{} }
+    else{ document.documentElement.setAttribute('data-mode','light'); try{localStorage.setItem('apb_mode','light');}catch{} }
+    document.querySelectorAll('[data-act="mode"]').forEach(b=>{ const s=b.querySelector('span'); b.innerHTML=modeIcon()+(s?('<span>'+s.textContent+'</span>'):''); });
   }
   function wireAppbar(){
     document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{
@@ -1581,13 +1818,13 @@
       else if(n==='new') newProfile();
       else if(n==='login') showAuth('login');
     });
-    const mb=$('#modeBtn'); if(mb) mb.onclick=()=>{
-      const isLight=document.documentElement.getAttribute('data-mode')==='light';
-      if(isLight){ document.documentElement.removeAttribute('data-mode'); try{localStorage.setItem('apb_mode','dark');}catch{} }
-      else{ document.documentElement.setAttribute('data-mode','light'); try{localStorage.setItem('apb_mode','light');}catch{} }
-      mb.innerHTML=document.documentElement.getAttribute('data-mode')==='light'?SUN:MOON;
-    };
-    const lo=$('#logout'); if(lo) lo.onclick=()=>{ clearSession(); currentUser=null; toast('تم تسجيل الخروج'); route(); };
+    document.querySelectorAll('[data-act="mode"]').forEach(b=>b.onclick=toggleMode);
+    document.querySelectorAll('[data-act="logout"]').forEach(b=>b.onclick=()=>{ clearSession(); currentUser=null; toast('تم تسجيل الخروج'); route(); });
+    const dw=$('#drawerWrap');
+    document.querySelectorAll('[data-act="menu"]').forEach(b=>b.onclick=()=>{ if(dw) dw.classList.add('open'); });
+    document.querySelectorAll('[data-act="menu-close"]').forEach(b=>b.onclick=()=>{ if(dw) dw.classList.remove('open'); });
+    // close the drawer after choosing a navigation item
+    document.querySelectorAll('.drawer [data-nav]').forEach(b=>b.addEventListener('click',()=>{ if(dw) dw.classList.remove('open'); }));
   }
 
   /* ---------- auth screen ---------- */
@@ -1688,7 +1925,7 @@
         <button class="btn primary" id="mkNew" style="width:auto;padding:12px 22px">+ بروفايل جديد</button>
       </div>
       <div id="mpList"><div class="loader" style="min-height:200px"><div><div class="spin"></div>جارٍ التحميل…</div></div></div>
-    </div>`;
+    </div>` + drawer('mine');
     wireAppbar();
     $('#mkNew').onclick=newProfile;
     try{
@@ -1902,7 +2139,7 @@
         </div>
         <button class="btn ghost" id="copyEdit" style="width:100%;margin-top:10px">${IC2.share} نسخ رابط المشاركة للتعديل</button>
       </div>
-    </div>`;
+    </div>` + drawer('build');
 
     // live preview
     let alignOn=false;
@@ -2055,30 +2292,20 @@
     try{
       const snap = await get(child(ref(db),'profiles/'+id));
       if(!snap.exists()){
-        $('#app').innerHTML = `<div class="loader"><div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:40px;color:var(--gold-2)">404</div>
-          <p style="margin:8px 0 18px">هذا البروفايل غير موجود أو تم حذفه.</p>
-          <a class="btn ghost" href="${location.pathname}" style="display:inline-flex">إنشاء بروفايل جديد</a></div></div>`;
+        renderError({code:'404', tag:'بروفايل غير موجود · NOT FOUND', title:'هذا البروفايل غير موجود',
+          msg:'الرابط غير صحيح أو تم حذف البروفايل أو تعديل معرّفه. تحقّق من الرابط أو أنشئ بروفايلاً جديداً.'});
         return;
       }
       const d = snap.val();
       seoFor(d);
       document.body.style.background = PAGE_BG[d.template]||'#0c1424';
-      $('#app').innerHTML = `
-        <div class="view-actions">
-          <a class="btn ghost" href="${location.pathname}" style="padding:9px 16px;font-size:13px">الرئيسية</a>
-          <button class="btn ghost" id="shareBtn" style="padding:9px 16px;font-size:13px">مشاركة الرابط</button>
-          <a class="btn ghost" href="${location.pathname}?edit=${id}" style="padding:9px 16px;font-size:13px">تعديل</a>
-        </div>
-        <div class="viewer">${renderCard(d)}</div>`;
+      $('#app').innerHTML = `<div class="viewer">${renderCard(d)}</div>`;
       wireCopy($('#app')); wire3D($('#app'));
       if(d.anim && d.anim!=='none'){ const pf=$('#app .pf'); if(pf) pf.classList.add('anim-'+d.anim); }
-      $('#shareBtn').onclick=()=>{navigator.clipboard?.writeText(location.href);toast('تم نسخ الرابط ✓');};
     }catch(e){
       console.error(e);
-      $('#app').innerHTML = `<div class="loader"><div>
-        <p>تعذّر تحميل البيانات. تحقّق من الاتصال أو قواعد قاعدة البيانات.</p>
-        <a class="btn ghost" href="${location.pathname}" style="display:inline-flex;margin-top:14px">العودة</a></div></div>`;
+      renderError({code:'⚠', tag:'تعذّر التحميل · LOAD ERROR', title:'تعذّر تحميل البيانات',
+        msg:'تحقّق من اتصالك بالإنترنت أو من قواعد قاعدة البيانات، ثم أعد المحاولة.', showReload:true});
     }
   }
 
