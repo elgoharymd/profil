@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>منشئ البروفايلات الأكاديمية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0c1424; --bg-2:#0f1a2e; --panel:#111d33;
+    --stroke:rgba(210,222,245,.12); --stroke-soft:rgba(210,222,245,.07);
+    --txt:#eef2fb; --muted:#9fabc6; --muted-2:#7f8bab;
+    --gold:#c9a548; --gold-2:#e6c980; --accent:#2f5db0; --accent-2:#3f74c9; --r:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;background:var(--bg);color:var(--txt);
+    min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1100px 700px at 85% -10%, rgba(47,93,176,.14), transparent 60%),
+      radial-gradient(900px 600px at 0% 108%, rgba(201,165,72,.08), transparent 55%);}
+  a{color:inherit}
+  ::selection{background:rgba(201,165,72,.3)}
+
+  /* ---------- app shell ---------- */
+  .appbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+    gap:12px;padding:14px clamp(16px,4vw,40px);border-bottom:1px solid var(--stroke-soft);
+    background:rgba(12,20,36,.75);backdrop-filter:blur(12px)}
+  .brand{display:flex;align-items:center;gap:12px;font-family:"Cormorant Garamond",serif;font-weight:700;
+    font-size:20px;letter-spacing:.5px}
+  .brand .mark{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--accent),#1c3f82);border:1px solid var(--stroke)}
+  .brand .mark svg{width:18px;height:18px;color:var(--gold-2)}
+  .brand .ar{font-family:"IBM Plex Sans Arabic";font-size:14px;font-weight:600;color:var(--muted)}
+  .appbar .tag{font-size:12px;color:var(--muted-2);border:1px solid var(--stroke-soft);
+    padding:5px 12px;border-radius:100px}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:clamp(20px,4vw,40px)}
+
+  /* ---------- builder layout ---------- */
+  .builder{display:grid;grid-template-columns:minmax(0,420px) 1fr;gap:28px;align-items:start}
+  @media(max-width:920px){.builder{grid-template-columns:1fr}}
+
+  .panel{background:linear-gradient(180deg,var(--panel),var(--bg-2));border:1px solid var(--stroke);
+    border-radius:16px;padding:clamp(18px,3vw,26px);position:relative;overflow:hidden}
+  .panel::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,transparent,var(--gold),var(--gold-2),var(--gold),transparent)}
+  .panel h2{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:600;margin-bottom:4px}
+  .panel .sub{color:var(--muted);font-size:13px;margin-bottom:20px}
+
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:7px;letter-spacing:.3px}
+  .field input,.field textarea{width:100%;font-family:inherit;font-size:14px;color:var(--txt);
+    background:rgba(255,255,255,.03);border:1px solid var(--stroke);border-radius:9px;padding:11px 13px;
+    transition:.2s;resize:vertical}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(201,165,72,.12);background:rgba(255,255,255,.05)}
+  .field textarea{min-height:92px;line-height:1.7}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:480px){.grid2{grid-template-columns:1fr}}
+
+  .templates{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:6px 0 22px}
+  .tpl{cursor:pointer;border:1px solid var(--stroke);border-radius:10px;padding:8px;background:rgba(255,255,255,.02);
+    transition:.2s;text-align:center}
+  .tpl:hover{border-color:rgba(201,165,72,.5)}
+  .tpl.active{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,165,72,.14)}
+  .tpl .swatch{height:52px;border-radius:7px;margin-bottom:8px;position:relative;overflow:hidden}
+  .tpl.t-royal .swatch{background:linear-gradient(135deg,#0f2a5e,#264f96)}
+  .tpl.t-royal .swatch::after{content:"";position:absolute;top:0;left:0;right:0;height:5px;
+    background:linear-gradient(90deg,#c9a548,#e6c980)}
+  .tpl.t-light .swatch{background:linear-gradient(135deg,#eef2f8,#dfe6f2)}
+  .tpl.t-light .swatch::after{content:"";position:absolute;bottom:8px;right:8px;left:8px;height:6px;
+    border-radius:4px;background:#1c3f82}
+  .tpl.t-aurora .swatch{background:linear-gradient(135deg,#1a1140,#4b1c7a 55%,#0e3b6e)}
+  .tpl.t-aurora .swatch::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(60px 40px at 70% 20%,rgba(120,220,255,.6),transparent 60%)}
+  .tpl .nm{font-size:12px;color:var(--muted);font-weight:500}
+  .tpl.active .nm{color:var(--gold-2)}
+
+  .btn{border:1px solid transparent;cursor:pointer;font-family:inherit;font-weight:600;font-size:14.5px;
+    padding:13px 22px;border-radius:10px;color:#fff;transition:.2s;text-decoration:none;
+    display:inline-flex;align-items:center;justify-content:center;gap:9px}
+  .btn.primary{width:100%;background:linear-gradient(120deg,var(--accent),var(--accent-2))}
+  .btn.primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px -14px var(--accent)}
+  .btn.gold{background:linear-gradient(120deg,var(--gold),#a8842f);color:#1a1300}
+  .btn.gold:hover{transform:translateY(-2px)}
+  .btn.ghost{background:transparent;border:1px solid var(--stroke);color:#cfd8ec}
+  .btn.ghost:hover{border-color:var(--gold);color:#fff}
+  .btn:disabled{opacity:.6;cursor:progress}
+  .btn svg{width:18px;height:18px}
+
+  .preview-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .preview-head .t{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:600}
+  .preview-head .live{font-size:11px;color:#8ff5c0;display:flex;align-items:center;gap:6px}
+  .preview-head .live::before{content:"";width:7px;height:7px;border-radius:50%;background:#8ff5c0;
+    box-shadow:0 0 10px #8ff5c0}
+  .stage{display:grid;place-items:center;padding:6px}
+
+  /* ---------- result modal ---------- */
+  .overlay{position:fixed;inset:0;z-index:60;background:rgba:(6,10,18,.7);background:rgba(6,10,18,.72);
+    backdrop-filter:blur(8px);display:none;place-items:center;padding:20px}
+  .overlay.show{display:grid}
+  .modal{width:min(520px,100%);background:linear-gradient(180deg,var(--panel),var(--bg-2));
+    border:1px solid var(--stroke);border-radius:16px;padding:28px;position:relative;overflow:hidden}
+  .modal::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,transparent,var(--gold),var(--gold-2),var(--gold),transparent)}
+  .modal .ok{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;margin:0 auto 14px;
+    background:rgba(143,245,192,.12);border:1px solid rgba(143,245,192,.4);color:#8ff5c0}
+  .modal h3{text-align:center;font-family:"Cormorant Garamond",serif;font-size:24px;margin-bottom:6px}
+  .modal p{text-align:center;color:var(--muted);font-size:13.5px;margin-bottom:18px}
+  .linkbox{display:flex;gap:8px;background:rgba(255,255,255,.03);border:1px solid var(--stroke);
+    border-radius:10px;padding:8px 8px 8px 12px;align-items:center;margin-bottom:16px}
+  .linkbox input{flex:1;background:transparent;border:none;color:var(--gold-2);font-size:13px;
+    font-family:"Space Grotesk",monospace;outline:none;direction:ltr;text-align:left}
+  .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .modal .close{position:absolute;top:14px;left:14px;width:32px;height:32px;border-radius:8px;
+    border:1px solid var(--stroke);background:transparent;color:var(--muted);cursor:pointer;font-size:16px}
+
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);z-index:99;
+    background:var(--panel);border:1px solid var(--stroke);color:#fff;padding:12px 22px;border-radius:10px;
+    font-size:14px;opacity:0;pointer-events:none;transition:.35s}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .loader{min-height:70vh;display:grid;place-items:center;text-align:center;color:var(--muted)}
+  .spin{width:44px;height:44px;border-radius:50%;border:3px solid var(--stroke);border-top-color:var(--gold);
+    animation:sp 1s linear infinite;margin:0 auto 16px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+
+  /* =====================================================================
+     PROFILE CARD  —  shared by preview + viewer, themed via .t-* classes
+     ===================================================================== */
+  .pf{position:relative;width:min(760px,100%);border-radius:var(--r);overflow:hidden;
+    border:1px solid var(--stroke);box-shadow:0 40px 110px -40px rgba(0,0,0,.8);
+    --p-bg:#111d33;--p-bg2:#0f1a2e;--p-txt:#eef2fb;--p-muted:#9fabc6;--p-muted2:#7f8bab;
+    --p-gold:#c9a548;--p-gold2:#e6c980;--p-accent:#2f5db0;--p-accent2:#3f74c9;--p-stroke:rgba(210,222,245,.12);
+    --p-soft:rgba(210,222,245,.07);--p-cover:linear-gradient(135deg,#0f2a5e 0%,#1c3f82 50%,#264f96 100%);
+    background:linear-gradient(180deg,var(--p-bg),var(--p-bg2));color:var(--p-txt);font-family:"IBM Plex Sans Arabic",sans-serif}
+  .pf::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;z-index:5;
+    background:linear-gradient(90deg,transparent,var(--p-gold),var(--p-gold2),var(--p-gold),transparent)}
+
+  /* theme: light */
+  .pf.t-light{--p-bg:#ffffff;--p-bg2:#f3f6fb;--p-txt:#16233d;--p-muted:#5a6a86;--p-muted2:#8593ad;
+    --p-gold:#b3892f;--p-gold2:#8a6a1f;--p-accent:#1c3f82;--p-accent2:#2f5db0;
+    --p-stroke:rgba(20,40,70,.12);--p-soft:rgba(20,40,70,.06);
+    --p-cover:linear-gradient(135deg,#1c3f82 0%,#2f5db0 60%,#3f74c9 100%);border-color:rgba(20,40,70,.14)}
+  /* theme: aurora */
+  .pf.t-aurora{--p-bg:#120a2e;--p-bg2:#0c0a22;--p-txt:#f2edff;--p-muted:#b3a9d6;--p-muted2:#8a80b0;
+    --p-gold:#7de3ff;--p-gold2:#c8a2ff;--p-accent:#7a34d0;--p-accent2:#3f74c9;
+    --p-stroke:rgba(200,180,255,.16);--p-soft:rgba(200,180,255,.08);
+    --p-cover:linear-gradient(135deg,#1a1140 0%,#4b1c7a 55%,#0e3b6e 100%)}
+
+  .pf-cover{position:relative;height:clamp(130px,18vw,170px);overflow:hidden;background:var(--p-cover);
+    border-bottom:1px solid var(--p-stroke)}
+  .pf-cover .lines{position:absolute;inset:0;opacity:.10;
+    background-image:linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px),
+      linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px);
+    background-size:44px 44px;mask:radial-gradient(130% 100% at 75% 0%,#000,transparent 78%)}
+  .pf.t-aurora .pf-cover .glow{position:absolute;inset:0;
+    background:radial-gradient(200px 120px at 72% 10%,rgba(120,220,255,.5),transparent 60%),
+      radial-gradient(220px 140px at 20% 120%,rgba(180,120,255,.45),transparent 60%);mix-blend-mode:screen}
+  .pf-seal{position:absolute;top:20px;left:24px;width:58px;height:58px;opacity:.92}
+  .pf-est{position:absolute;top:22px;right:26px;text-align:right;color:#eaf1ff;
+    font-family:"Cormorant Garamond",serif;line-height:1.3}
+  .pf-est .en{font-size:15px;font-weight:600}
+  .pf-est .ar{font-size:12.5px;opacity:.85;font-family:"IBM Plex Sans Arabic"}
+
+  .pf-inner{position:relative;z-index:2;padding:clamp(20px,4vw,40px);padding-top:clamp(16px,3vw,26px)}
+  .pf-top{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin-top:-64px;position:relative;z-index:3}
+  .pf-avatar{--s:118px;width:var(--s);height:var(--s);border-radius:50%;flex:none;position:relative;
+    background:linear-gradient(135deg,var(--p-accent),#1c3f82);display:grid;place-items:center;
+    font-family:"Amiri",serif;font-weight:700;font-size:46px;color:#fff;
+    box-shadow:0 0 0 5px var(--p-bg),0 18px 44px -16px rgba(0,0,0,.6);overflow:hidden}
+  .pf-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1}
+  .pf-avatar::after{content:"";position:absolute;inset:0;z-index:2;border-radius:50%;
+    box-shadow:inset 0 0 0 2px rgba(201,165,72,.55)}
+  .pf-who{flex:1;min-width:220px;padding-top:70px}
+  .pf-kicker{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;letter-spacing:1.3px;
+    color:var(--p-gold2);border:1px solid color-mix(in srgb,var(--p-gold) 34%,transparent);
+    background:color-mix(in srgb,var(--p-gold) 8%,transparent);padding:5px 12px;border-radius:6px;margin-bottom:12px}
+  .pf-kicker::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--p-gold)}
+  .pf-name{font-family:"Amiri",serif;font-weight:700;font-size:clamp(26px,4.4vw,40px);line-height:1.15;color:var(--p-txt)}
+  .pf-name .en{display:block;font-family:"Cormorant Garamond",serif;font-size:.5em;font-weight:600;
+    color:var(--p-muted);letter-spacing:.5px;margin-top:7px}
+  .pf-role{margin-top:13px;color:var(--p-muted);font-size:14.5px;line-height:1.75;max-width:58ch}
+  .pf-role b{color:var(--p-gold2);font-weight:600}
+
+  .pf-div{height:1px;margin:28px 0;background:linear-gradient(90deg,transparent,var(--p-stroke),transparent)}
+  .pf-sec{display:flex;align-items:center;gap:12px;font-family:"Cormorant Garamond",serif;font-size:19px;
+    font-weight:600;color:var(--p-gold2);margin-bottom:16px}
+  .pf-sec .ar{font-family:"IBM Plex Sans Arabic";font-size:14px;font-weight:600;letter-spacing:.8px}
+  .pf-sec span.line{height:1px;flex:1;background:linear-gradient(90deg,color-mix(in srgb,var(--p-gold) 35%,transparent),transparent)}
+  .pf-about{color:var(--p-muted);line-height:2;font-size:14.5px;max-width:70ch}
+
+  .pf-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+  .pf-item{display:flex;gap:13px;align-items:center;padding:15px 16px;border-radius:10px;
+    border:1px solid var(--p-soft);background:color-mix(in srgb,var(--p-txt) 3%,transparent)}
+  .pf-ic{width:40px;height:40px;flex:none;border-radius:8px;display:grid;place-items:center;
+    background:color-mix(in srgb,var(--p-accent) 16%,transparent);color:var(--p-gold2);border:1px solid var(--p-soft)}
+  .pf-ic svg{width:19px;height:19px}
+  .pf-item .l{font-size:11px;color:var(--p-muted2);letter-spacing:.4px}
+  .pf-item .v{font-size:14px;color:var(--p-txt);font-weight:500;margin-top:3px;word-break:break-word}
+
+  .pf-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .pf-btn{border:1px solid transparent;cursor:pointer;font-family:inherit;font-weight:600;font-size:14px;
+    padding:12px 20px;border-radius:9px;color:#fff;transition:.2s;text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px}
+  .pf-btn.pri{background:linear-gradient(120deg,var(--p-accent),var(--p-accent2))}
+  .pf-btn.pri:hover{transform:translateY(-2px)}
+  .pf-btn.au{background:linear-gradient(120deg,var(--p-gold),var(--p-gold2));color:#1a1300}
+  .pf.t-aurora .pf-btn.au{color:#12082e}
+  .pf-btn.gh{background:transparent;border:1px solid var(--p-stroke);color:var(--p-muted)}
+  .pf-btn.gh:hover{border-color:var(--p-gold);color:var(--p-txt);transform:translateY(-2px)}
+  .pf-btn svg{width:17px;height:17px}
+  .pf-contact-p{color:var(--p-muted);font-size:14px;line-height:1.8;margin-bottom:18px;max-width:52ch}
+
+  /* viewer page */
+  .viewer{min-height:100vh;display:grid;place-items:center;padding:44px 18px}
+  .view-actions{position:fixed;top:16px;left:16px;z-index:30;display:flex;gap:8px}
+</style>
+</head>
+<body>
+  <div id="app"></div>
+  <div class="toast" id="toast">تم النسخ ✓</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getDatabase, ref, push, set, get, child } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDynVoQRSD9icEcXfEz8Fdjms-sNd9gz9Y",
+    authDomain: "xogame-a4254.firebaseapp.com",
+    databaseURL: "https://xogame-a4254-default-rtdb.firebaseio.com",
+    projectId: "xogame-a4254",
+    storageBucket: "xogame-a4254.firebasestorage.app",
+    messagingSenderId: "961834791643",
+    appId: "1:961834791643:web:4916dd3cd8fa577d2f92fe",
+    measurementId: "G-SESYRWKR5J"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+
+  /* ---------- helpers ---------- */
+  const $ = (s,r=document)=>r.querySelector(s);
+  const esc = s => String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const toast = (m="تم النسخ ✓")=>{const t=$('#toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1900);};
+  const initials = n => (n||"؟").trim().replace(/^(Prof\.|Dr\.|أ\.د\.|د\.)\s*/i,'').charAt(0).toUpperCase();
+
+  const TEMPLATES = [
+    {id:'royal', name:'الكلاسيكي'},
+    {id:'light', name:'الفاتح'},
+    {id:'aurora',name:'العصري'},
+  ];
+
+  const SEAL = `<svg class="pf-seal" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="32" cy="32" r="30" stroke="rgba(230,201,128,.85)" stroke-width="1.5"/>
+    <circle cx="32" cy="32" r="24" stroke="rgba(230,201,128,.45)" stroke-width="1"/>
+    <path d="M32 18 L46 25 L32 32 L18 25 Z" fill="rgba(230,201,128,.9)"/>
+    <path d="M24 28 V37 C24 40 28 42 32 42 C36 42 40 40 40 37 V28" stroke="rgba(230,201,128,.9)" stroke-width="1.5"/>
+    <line x1="46" y1="25" x2="46" y2="34" stroke="rgba(230,201,128,.9)" stroke-width="1.5"/></svg>`;
+
+  /* ---------- profile card renderer (shared) ---------- */
+  function renderCard(d){
+    const t = TEMPLATES.some(x=>x.id===d.template)?d.template:'royal';
+    const photo = d.photo
+      ? `<img src="${esc(d.photo)}" alt="${esc(d.name)}" onerror="this.remove()"/>`
+      : esc(initials(d.name));
+    const nameEn = d.nameEn ? `<span class="en">${esc(d.nameEn)}</span>` : `<span class="en"></span>`;
+    return `
+    <article class="pf t-${t}">
+      <div class="pf-cover">
+        <div class="lines"></div><div class="glow"></div>
+        ${SEAL}
+        <div class="pf-est">
+          <div class="en">${esc(d.universityEn||'University')}</div>
+          <div class="ar">${esc(d.university||'')}${d.faculty?' — '+esc(d.faculty):''}</div>
+        </div>
+      </div>
+      <div class="pf-inner">
+        <div class="pf-top">
+          <div class="pf-avatar">${photo}</div>
+          <div class="pf-who">
+            <span class="pf-kicker">${esc(d.kicker||'أستاذ دكتور · Professor')}</span>
+            <h1 class="pf-name">${esc(d.name||'الاسم')}${nameEn}</h1>
+            <p class="pf-role">${d.role?esc(d.role):''}</p>
+          </div>
+        </div>
+
+        ${d.about?`
+        <div class="pf-div"></div>
+        <div class="pf-sec">Profile <span class="line"></span><span class="ar">نبذة تعريفية</span></div>
+        <p class="pf-about">${esc(d.about)}</p>`:''}
+
+        <div class="pf-div"></div>
+        <div class="pf-sec">Details <span class="line"></span><span class="ar">بيانات أساسية</span></div>
+        <div class="pf-info">
+          ${d.university?infoItem('uni','الجامعة',d.university):''}
+          ${d.specialization?infoItem('spec','التخصص',d.specialization):''}
+          ${d.degree?infoItem('deg','الدرجة العلمية',d.degree):''}
+          ${d.interests?infoItem('int','الاهتمامات البحثية',d.interests):''}
+        </div>
+
+        ${(d.email||d.phone)?`
+        <div class="pf-div"></div>
+        <div class="pf-sec">Contact <span class="line"></span><span class="ar">التواصل</span></div>
+        <p class="pf-contact-p">${esc(d.contactNote||'يسعدني تواصلكم للاستفسارات الأكاديمية أو الإشراف البحثي أو التعاون العلمي.')}</p>
+        <div class="pf-actions">
+          ${d.email?`<a class="pf-btn pri" href="mailto:${esc(d.email)}">${IC.mail} البريد الإلكتروني</a>
+          <button class="pf-btn au" data-copy="${esc(d.email)}">${IC.copy} نسخ البريد</button>`:''}
+          ${d.phone?`<a class="pf-btn gh" href="tel:${esc(d.phone)}">${IC.phone} اتصال هاتفي</a>`:''}
+        </div>`:''}
+      </div>
+    </article>`;
+  }
+  const IC = {
+    uni:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M15 9h.01M9 13h.01M15 13h.01M10 21v-4h4v4"/></svg>',
+    spec:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/></svg>',
+    deg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7l-9-5Z"/></svg>',
+    int:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>',
+    mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+    copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
+    phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8 9.6a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>',
+  };
+  function infoItem(icon,label,val){
+    return `<div class="pf-item"><div class="pf-ic">${IC[icon]}</div>
+      <div><div class="l">${esc(label)}</div><div class="v">${esc(val)}</div></div></div>`;
+  }
+
+  /* wire copy buttons inside any rendered card */
+  function wireCopy(root=document){
+    root.querySelectorAll('[data-copy]').forEach(b=>{
+      b.onclick=()=>{navigator.clipboard?.writeText(b.dataset.copy);toast('تم نسخ البريد ✓');};
+    });
+  }
+
+  /* ======================================================================
+     BUILDER
+     ====================================================================== */
+  const DEFAULTS = {
+    template:'royal',
+    kicker:'أستاذ دكتور · Professor',
+    name:'Prof. Dr. Mona El-Fiky', nameEn:'',
+    role:'أستاذ بقسم هندسة الحاسبات والذكاء الاصطناعي — كلية الهندسة، جامعة القاهرة.',
+    about:'أستاذ جامعي وباحث بخبرة تتجاوز عشرين عاماً في مجالات الذكاء الاصطناعي وتعلّم الآلة ومعالجة اللغة الطبيعية. أُشرف على طلاب الدراسات العليا وأقود عدداً من المشروعات البحثية، وأسعى دائماً لربط المعرفة الأكاديمية بالتطبيقات العملية التي تخدم المجتمع.',
+    university:'جامعة القاهرة', universityEn:'Cairo University', faculty:'كلية الهندسة',
+    specialization:'ذكاء اصطناعي · تعلّم آلة', degree:'أستاذ دكتور', interests:'',
+    email:'s.elazhary@cu.edu.eg', phone:'+20221000000',
+    photo:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj2A4UZQ9zLBWdO3oDvM9HfmLz8Hg8rne9GB-KEAnm6Y-_iJF4r4NdGMEPInRzrrw9Zuye-HTDCXIIK6FZh3Sgx3HqboQLkzRNLf9cksKCDp4xgydAs4kHCBayiP3JG1K17PDI2oVFN7YD9p88plFVjs60BfX3I7qGoKe_yjX5Vu7dlgY1zxYhpUwStKsc/s1600/a5b90f46-0789-4e9b-a41c-a2e054810503.jpg',
+  };
+  let state = {...DEFAULTS};
+
+  function appbar(){
+    return `<div class="appbar">
+      <div class="brand"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7l-9-5Z"/></svg></span>
+        Academic Profiles <span class="ar">· منشئ البروفايلات</span></div>
+      <span class="tag">Firebase · Realtime</span>
+    </div>`;
+  }
+
+  function fld(id,label,val,type='input',ph=''){
+    if(type==='textarea') return `<div class="field"><label>${label}</label><textarea id="f-${id}" placeholder="${ph}">${esc(val)}</textarea></div>`;
+    return `<div class="field"><label>${label}</label><input id="f-${id}" value="${esc(val)}" placeholder="${ph}"/></div>`;
+  }
+
+  function showBuilder(){
+    document.title = 'منشئ البروفايلات الأكاديمية';
+    $('#app').innerHTML = appbar() + `
+    <div class="wrap"><div class="builder">
+      <section class="panel">
+        <h2>أنشئ بروفايلك</h2>
+        <div class="sub">اختر تصميماً، عبّئ البيانات، ثم أنشئ رابطاً دائماً يُحفظ في Firebase.</div>
+
+        <label style="font-size:12.5px;color:var(--muted);display:block;margin-bottom:9px">التصميم</label>
+        <div class="templates" id="tpls">
+          ${TEMPLATES.map(t=>`<div class="tpl t-${t.id} ${t.id===state.template?'active':''}" data-tpl="${t.id}">
+            <div class="swatch"></div><div class="nm">${t.name}</div></div>`).join('')}
+        </div>
+
+        ${fld('name','الاسم (رئيسي)',state.name)}
+        ${fld('nameEn','الاسم بالإنجليزية (اختياري)',state.nameEn,'input','Prof. Dr. …')}
+        ${fld('kicker','المسمّى العلوي',state.kicker)}
+        ${fld('role','المنصب / القسم',state.role,'textarea')}
+        ${fld('about','النبذة التعريفية',state.about,'textarea')}
+        <div class="grid2">${fld('university','الجامعة',state.university)}${fld('universityEn','Univ. (EN)',state.universityEn)}</div>
+        <div class="grid2">${fld('faculty','الكلية',state.faculty)}${fld('degree','الدرجة العلمية',state.degree)}</div>
+        <div class="grid2">${fld('specialization','التخصص',state.specialization)}${fld('interests','الاهتمامات البحثية',state.interests)}</div>
+        <div class="grid2">${fld('email','البريد الإلكتروني',state.email)}${fld('phone','رقم الهاتف',state.phone)}</div>
+        ${fld('photo','رابط الصورة الشخصية',state.photo,'input','https://…')}
+
+        <button class="btn primary" id="gen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
+          إنشاء الرابط وحفظه
+        </button>
+      </section>
+
+      <section>
+        <div class="preview-head"><span class="t">معاينة حيّة</span><span class="live">مباشر</span></div>
+        <div class="panel" style="padding:clamp(14px,2vw,22px)"><div class="stage" id="preview"></div></div>
+      </section>
+    </div></div>
+
+    <div class="overlay" id="ov">
+      <div class="modal">
+        <button class="close" id="ovClose">✕</button>
+        <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="26" height="26"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h3>تم إنشاء البروفايل</h3>
+        <p>هذا هو رابط بروفايلك الدائم — شاركه مع من تريد.</p>
+        <div class="linkbox"><input id="outLink" readonly/><button class="btn gold" id="copyLink" style="padding:9px 16px">نسخ</button></div>
+        <div class="modal-actions">
+          <a class="btn primary" id="openLink" target="_blank">فتح البروفايل</a>
+          <button class="btn ghost" id="newOne">إنشاء آخر</button>
+        </div>
+      </div>
+    </div>`;
+
+    // live preview
+    const paint = ()=>{ $('#preview').innerHTML = renderCard(state); };
+    paint();
+
+    // inputs
+    [['name'],['nameEn'],['kicker'],['role'],['about'],['university'],['universityEn'],
+     ['faculty'],['degree'],['specialization'],['interests'],['email'],['phone'],['photo']]
+     .forEach(([k])=>{
+       const el=$('#f-'+k); if(!el)return;
+       el.addEventListener('input',()=>{state[k]=el.value;paint();});
+     });
+
+    // template picker
+    $('#tpls').querySelectorAll('.tpl').forEach(t=>{
+      t.onclick=()=>{
+        state.template=t.dataset.tpl;
+        $('#tpls').querySelectorAll('.tpl').forEach(x=>x.classList.toggle('active',x===t));
+        paint();
+      };
+    });
+
+    // generate
+    $('#gen').onclick = async ()=>{
+      const btn=$('#gen'); btn.disabled=true; const old=btn.innerHTML; btn.innerHTML='جارٍ الحفظ…';
+      try{
+        const clean={...state, createdAt: Date.now()};
+        const node = push(ref(db,'profiles'));
+        await set(node, clean);
+        const id = node.key;
+        const link = location.href.split('#')[0].split('?')[0] + '?id=' + id;
+        $('#outLink').value = link;
+        $('#openLink').href = link;
+        $('#ov').classList.add('show');
+      }catch(e){
+        console.error(e);
+        toast('تعذّر الحفظ — تحقّق من قواعد قاعدة البيانات');
+      }finally{ btn.disabled=false; btn.innerHTML=old; }
+    };
+
+    $('#copyLink').onclick=()=>{navigator.clipboard?.writeText($('#outLink').value);toast('تم نسخ الرابط ✓');};
+    $('#ovClose').onclick=()=>$('#ov').classList.remove('show');
+    $('#newOne').onclick=()=>$('#ov').classList.remove('show');
+    $('#ov').onclick=e=>{if(e.target===$('#ov'))$('#ov').classList.remove('show');};
+  }
+
+  /* ======================================================================
+     VIEWER
+     ====================================================================== */
+  async function showViewer(id){
+    $('#app').innerHTML = `<div class="loader"><div><div class="spin"></div>جارٍ تحميل البروفايل…</div></div>`;
+    try{
+      const snap = await get(child(ref(db),'profiles/'+id));
+      if(!snap.exists()){
+        $('#app').innerHTML = `<div class="loader"><div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:40px;color:var(--gold-2)">404</div>
+          <p style="margin:8px 0 18px">هذا البروفايل غير موجود أو تم حذفه.</p>
+          <a class="btn ghost" href="${location.pathname}" style="display:inline-flex">إنشاء بروفايل جديد</a></div></div>`;
+        return;
+      }
+      const d = snap.val();
+      document.title = (d.name||'بروفايل') + ' — الملف الأكاديمي';
+      // theme background for full page
+      const bg = {royal:'#0c1424', light:'#e9eef6', aurora:'#0c0a22'}[d.template]||'#0c1424';
+      document.body.style.background = bg;
+      $('#app').innerHTML = `
+        <div class="view-actions">
+          <a class="btn ghost" href="${location.pathname}" style="padding:9px 16px;font-size:13px">+ بروفايل جديد</a>
+          <button class="btn ghost" id="shareBtn" style="padding:9px 16px;font-size:13px">مشاركة الرابط</button>
+        </div>
+        <div class="viewer">${renderCard(d)}</div>`;
+      wireCopy($('#app'));
+      $('#shareBtn').onclick=()=>{navigator.clipboard?.writeText(location.href);toast('تم نسخ الرابط ✓');};
+    }catch(e){
+      console.error(e);
+      $('#app').innerHTML = `<div class="loader"><div>
+        <p>تعذّر تحميل البيانات. تحقّق من الاتصال أو قواعد قاعدة البيانات.</p>
+        <a class="btn ghost" href="${location.pathname}" style="display:inline-flex;margin-top:14px">العودة</a></div></div>`;
+    }
+  }
+
+  /* ---------- router ---------- */
+  const id = new URLSearchParams(location.search).get('id');
+  if(id) showViewer(id); else showBuilder();
+</script>
+</body>
+</html>
